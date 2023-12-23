@@ -64,12 +64,12 @@
             <div class="sidebar-heading">
                 Master
             </div>
-             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/user}">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>User</span></a>
-            </li>
-            
+			<li class="nav-item"><a class="nav-link" th:href="@{/user}">
+				<i class="fas fa-fw fa-table"></i> <span>User</span>
+		</a></li>
+		<li class="nav-item"><a class="nav-link" th:href="@{/agen}">
+			<i class="fas fa-fw fa-table"></i> <span>Agen</span>
+		</a></li>            
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -306,13 +306,7 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">Tables User</h1>
-<!-- 					<p class="mb-4"> -->
-<!-- 						DataTables is a third party plugin that is used to generate the -->
-<!-- 						demo table below. For more information about DataTables, please -->
-<!-- 						visit the <a target="_blank" href="https://datatables.net">official -->
-<!-- 							DataTables documentation</a>. -->
-<!-- 					</p> -->
+					<h1 class="h3 mb-2 text-gray-800">Data User</h1>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
@@ -320,7 +314,7 @@
 <!-- 							<h6 class="m-0 font-weight-bold text-primary">DataTables -->
 <!-- 								Example</h6> -->
 							<button data-target="#mainModal" data-toggle="modal"
-								class="btn btn-primary">
+								class="btn btn-primary" id="addButton">
 								<i class="fa fa-plus"></i>
 							</button>
 						</div>
@@ -330,7 +324,6 @@
 									cellspacing="0">
 									<thead>
 										<tr>
-											<th>Username</th>
 											<th style="display: none;">
 											<th>Email</th>
 											<th>Action</th>
@@ -338,9 +331,8 @@
 									</thead>
 									<tbody>
 										<tr th:each="data : ${data}">
-											<td th:text="${data.username}"></td>
-											<td th:text="${data.password}" style="display: none"></td>
 											<td th:text="${data.email}"></td>
+											<td th:text="${data.password}" style="display: none"></td>
 											<td><button class="btn btn-primary btn-edit"
 													style="margin-right: 10px;">
 													<i class="fa fa-edit"></i>
@@ -443,16 +435,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="username">Username:</label> <input type="text"
-							class="form-control" id="username" placeholder="Username">
+						<label for="email">Email:</label>
+						<select id="email" name="email" class="form-control">
+							<div id="dynamic-content-email-agen"></div>
+						</select>
 					</div>
 					<div class="form-group">
 						<label for="password">Password:</label> <input type="password"
 							class="form-control" id="password" placeholder="password">
 					</div>
 					<div class="form-group">
-						<label for="emailUser">Email:</label> <input type="text"
-							class="form-control" id="emailUser" placeholder="Email">
+						<label for="emailUser">Role:</label> 
+						<select id="cars" name="cars" class="form-control">
+							<option value="admin">Admin</option>
+							<option value="agen">Agen</option>
+						  </select>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -485,25 +482,49 @@
 		var tempUsername = "";
 		var tempPassword = "";
 		var tempEmail = "";
+
+		$('#addButton').on('click',function(){
+			console.log("add button");
+			$('#email').html('');						
+			$.ajax({
+				type : 'GET',
+				contentType : 'application/json',
+				url : '/api/agen/get-no-user',
+				success : function(response) {
+					console.log(response);
+					if(response.data.length>0){
+						console.log(response.data.length);
+						var object = response.data;
+						for (let i = 0; i < object.length; i++) {
+							console.log(object[i].email);
+							$('#email').append('<option value="'+object[i].email+'">'+object[i].email+'</option> ');						
+						}
+					}
+				},
+				error : function(error) {
+					alert('An error occurred');
+				}
+			});
+		})
 		
 		$('#submitUser').on('click', function() {
 
-			const user = $("#username").val();
+			const email = $("#email").val();
 			const pass = $("#password").val();
-			const email = $("#emailUser").val();
+			const role = $("#role").val();
 
-			console.log("test " + user + " " + pass + " " + email);
+			console.log("test " + pass + " " + email);
 
 			var dataUser = {
-				username : user,
+				email : email,
 				password : pass,
-				email : email
+				role : role
 			};
 
 			$.ajax({
 				type : 'POST',
 				contentType : 'application/json',
-				url : '/api/user/save',
+				url : '/api/user/post-save',
 				data : JSON.stringify(dataUser),
 				success : function(response) {
 					console.log(response);

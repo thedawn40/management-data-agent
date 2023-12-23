@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.dto.MsUserDto;
+import com.dto.UserDto;
 //import com.dto.master.MsUserDto;
-import com.service.master.MsUserService;
+import com.service.UserService;
 
 @Controller
 public class AuthController {
 	
 	@Autowired
-	MsUserService msUserSvc;
+	UserService userService;
 
 	@GetMapping({ "/", "/login" })
     public String login(){
@@ -28,7 +28,7 @@ public class AuthController {
     }
 	
 	@PostMapping({"/login" })
-   public String loginApp(@ModelAttribute("user") MsUserDto dto){
+   public String loginApp(@ModelAttribute("user") UserDto dto){
 		
 		boolean isValid = true;
 		// try {
@@ -45,7 +45,7 @@ public class AuthController {
 		// 	e.printStackTrace();
 		// }
 
-		System.out.println("hu "+dto.getUsername());
+		System.out.println("hu "+dto.getEmail());
 		if(isValid) {
 	        return "dashboard";			
 		}
