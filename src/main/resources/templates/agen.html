@@ -44,7 +44,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Toko Emas</div>
+                <div class="sidebar-brand-text mx-3">Management Agent</div>
             </a>
 
             <!-- Divider -->
@@ -306,7 +306,7 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">Table Agen</h1>
+					<h1 class="h3 mb-2 text-gray-800">Data Agen</h1>
 <!-- 					<p class="mb-4"> -->
 <!-- 						DataTables is a third party plugin that is used to generate the -->
 <!-- 						demo table below. For more information about DataTables, please -->
@@ -320,7 +320,7 @@
 <!-- 							<h6 class="m-0 font-weight-bold text-primary">DataTables -->
 <!-- 								Example</h6> -->
 							<button data-target="#mainModal" data-toggle="modal"
-								class="btn btn-primary">
+								class="btn btn-primary" id="btn-add">
 								<i class="fa fa-plus"></i>
 							</button>
 						</div>
@@ -450,16 +450,25 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="username">Username:</label> <input type="text"
-							class="form-control" id="username" placeholder="Username">
+						<label for="nama_agen">Nama:</label> <input type="text"
+							class="form-control" id="nama_agen" placeholder="Nama">
+							<input type="hidden" 
+							class="form-control" id="agen_id" placeholder="Nama">
 					</div>
 					<div class="form-group">
-						<label for="password">Password:</label> <input type="password"
-							class="form-control" id="password" placeholder="password">
+						<label for="alamat_agen">Alamat:</label> <input type="text"
+							class="form-control" id="alamat_agen" placeholder="Alamat">
 					</div>
 					<div class="form-group">
-						<label for="emailUser">Email:</label> <input type="text"
-							class="form-control" id="emailUser" placeholder="Email">
+						<label for="email_agen">Email:</label> <input type="text"
+							class="form-control" id="email_agen" placeholder="Email">
+					</div>
+					<div class="form-group">
+						<label for="tgl_daftar_agen">Tanggal Pendaftaran:</label> <input type="date"
+							class="form-control" id="tgl_daftar_agen" placeholder="">
+					</div>
+					<div class="form-group">
+						<label for="status_agen">Status:</label> <input type="checkbox" id="status_agen">
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -489,28 +498,58 @@
 	<script src="js/demo/datatables-demo.js"></script>
 
 	<script type="text/javascript">
-		var tempUsername = "";
-		var tempPassword = "";
+		var tempTglStatus = "";
+		var tempTglDaftar = "";
+		var tempAlamat = "";
+		var tempNama = "";
 		var tempEmail = "";
+		var tempAgenId = "";
+		var action = "";
 		
+		$('#btn-add').on('click',function(){
+			$("#agen_id").val('');
+			$("#nama_agen").val('');
+			$("#alamat_agen").val('');
+			$("#email_agen").val('');
+			$("#tgl_daftar_agen").val('');
+			$("#status_agen").val('');
+			action = "add";
+		})
+
 		$('#submitUser').on('click', function() {
 
-			const user = $("#username").val();
-			const pass = $("#password").val();
-			const email = $("#emailUser").val();
+			const namaAgen = $("#nama_agen").val();
+			const alamat = $("#alamat_agen").val();
+			const email = $("#email_agen").val();
+			const tglDaftar = $("#tgl_daftar_agen").val();
+			var statusAgen = $("#status_agen").val();
+			var id = "";
+			
+			if(statusAgen=="on"){
+				statusAgen = 1;
+			}else{
+				statusAgen = 0;
+			}
 
-			console.log("test " + user + " " + pass + " " + email);
+			if(action=="add"){
+				id = null
+			}else{
+				id = $('#agen_id').val();
+			}
 
 			var dataUser = {
-				username : user,
-				password : pass,
-				email : email
+				id : id,
+				nama : namaAgen,
+				alamat : alamat,
+				email : email,
+				tglPendaftaran : tglDaftar,
+				status : statusAgen
 			};
 
 			$.ajax({
 				type : 'POST',
 				contentType : 'application/json',
-				url : '/api/user/save',
+				url : '/api/agen/save',
 				data : JSON.stringify(dataUser),
 				success : function(response) {
 					console.log(response);
@@ -526,45 +565,40 @@
 
 		$('.btn-edit').on('click', function() {
 			var row = $(this).closest('tr');
-			var name = row.find('td:eq(0)').text();
-			var pass = row.find('td:eq(1)').text();
-			var email = row.find('td:eq(2)').text();
+			var agenId = row.find('td:eq(0)').text();
+			var name = row.find('td:eq(1)').text();
+			var alamat = row.find('td:eq(2)').text();
+			var email = row.find('td:eq(3)').text();
+			var tglDaftar = row.find('td:eq(4)').text();
+			var statusAgen = row.find('td:eq(5)').text();
 
 			$('#mainModal').modal('show');
-			$("#username").val(name);
-			$("#password").val(pass);
-			$("#emailUser").val(email);
+			$("#agen_id").val(agenId);
+			$("#nama_agen").val(name);
+			$("#alamat_agen").val(alamat);
+			$("#email_agen").val(email);
+			$("#tgl_daftar_agen").val(tglDaftar);
+			$("#status_agen").val(statusAgen);
 		})
 		
 		
 		$('.btn-delete').on('click', function() {
 			var row = $(this).closest('tr');
-			var name = row.find('td:eq(0)').text();
-			var pass = row.find('td:eq(1)').text();
-			var email = row.find('td:eq(2)').text();
+			var agenId = row.find('td:eq(0)').text();
+			var name = row.find('td:eq(1)').text();
 			
-			tempUsername = name;
-			tempPassword = pass;
-			tempEmail = email;
+			tempAgenId = agenId;
 
 			$('#deleteModal').modal('show');
 			$('#usernameDelete').html("Are you sure want to delete "+name+"?");
 		})
 		
 		$('#confirmDeleteBtn').on('click', function() {
-			
-			console.log(tempUsername+" "+tempPassword+" "+tempEmail)
-			var dataUser = {
-				username : tempUsername,
-				password : tempPassword,
-				email : tempEmail
-			};
-			
+						
 			$.ajax({
 				type : 'POST',
 				contentType : 'application/json',
-				url : '/api/user/delete',
-				data : JSON.stringify(dataUser),
+				url : '/api/agen/delete/'+tempAgenId,
 				success : function(response) {
 					console.log(response);
 					location.reload();

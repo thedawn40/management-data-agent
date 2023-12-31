@@ -1,1 +1,8 @@
 /target/
+pom.xml
+src/main/resources/application.properties
+application-2023-12-28.0.log
+application-2023-12-30.0.log
+application-2023-12-29.0.log
+.factorypath
+.gitignore

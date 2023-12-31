@@ -1,13 +1,21 @@
 package com.controller;
 
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.trace.http.HttpTrace.Session;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dto.UserDto;
+import com.model.Agen;
+import com.service.AgenService;
 //import com.dto.master.MsUserDto;
 import com.service.UserService;
 
@@ -16,6 +24,10 @@ public class AuthController {
 	
 	@Autowired
 	UserService userService;
+
+	    @Autowired
+    AgenService agenService;
+
 
 	@GetMapping({ "/", "/login" })
     public String login(){
@@ -28,7 +40,7 @@ public class AuthController {
     }
 	
 	@PostMapping({"/login" })
-   public String loginApp(@ModelAttribute("user") UserDto dto){
+   public String loginApp(@ModelAttribute("user") UserDto dto, HttpSession session){
 		
 		boolean isValid = true;
 		// try {
@@ -44,6 +56,7 @@ public class AuthController {
 		// }catch(Exception e) {
 		// 	e.printStackTrace();
 		// }
+		session.setAttribute("username", dto.getEmail());
 
 		System.out.println("hu "+dto.getEmail());
 		if(isValid) {
@@ -54,7 +67,16 @@ public class AuthController {
    }
 	
 	@GetMapping("/dashboard")
-    public String dashboard(){
+    public String dashboard(Model model, HttpSession session){
+
+		try {
+                
+                List<Agen> data = agenService.findAll();
+                model.addAttribute("totalAgen", data.size());
+                
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
         return "dashboard";
     }
 

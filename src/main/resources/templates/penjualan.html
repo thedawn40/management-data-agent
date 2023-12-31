@@ -306,6 +306,7 @@
 								class="btn btn-primary">
 								<i class="fa fa-plus"></i>
 							</button>
+							<input type="hidden" id="picagen" th:text="${username}"/>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -514,7 +515,7 @@
 					</div>
 					<!-- Button to trigger the nested modal -->
 					<button type="button" class="btn btn-primary" data-toggle="modal"
-						data-target="#nestedModal">Add detail</button>
+						data-target="#nestedModal" id="addDataDetail">Add detail</button>
 					<div class="card-body"
 						style="margin-top: 10px; border: 1px solid #6e707e">
 						<div class="table-responsive">
@@ -522,10 +523,10 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th>Brand</th>
-										<th>Weight</th>
-										<th>Quantity</th>
-										<th>Price</th>
+										<th>Produk ID</th>
+										<th>Nama Produk</th>
+										<th>Jenis Produk</th>
+										<th>Premi</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -557,31 +558,17 @@
 					</button>
 				</div>
 				<div class="modal-body">
+					<div id="dynamic-content"></div>
 					<div class="form-group">
-						<label for="brand">Brand:</label> <select class="form-control"
-							id="brand">
-							<option value="antam">Antam</option>
-							<option value="minigold">Minigold</option>
-						</select>
+						<label for="produk_jenis">Jenis Produk :</label>
+						<input type="hidden" disabled
+						class="form-control" id="produk_id">
+						<input type="text" disabled
+						class="form-control" id="produk_jenis" placeholder="Jenis Produk">
 					</div>
 					<div class="form-group">
-						<label for="weight">Weight:</label><select class="form-control"
-							id="weight">
-							<option value="0.5">0.5</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="5">5</option>
-							<option value="10">10</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="qty">Quantity:</label> <input type="text"
-							class="form-control" id="qty" placeholder="Quantity">
-					</div>
-					<div class="form-group">
-						<label for="price">Price:</label> <input type="text"
-							class="form-control" id="price" placeholder="Price">
+						<label for="produk_premi">Premi :</label> <input type="text" disabled
+							class="form-control" id="produk_premi" placeholder="Premi">
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -614,40 +601,88 @@
 		const submitDetail = document.getElementById('addDetail');
 		const detailTable = document.getElementById('detailTable');
 		let detail = [];
+
+		$('#addDataDetail').on('click',function(){
+			$('#produk_id').val('');
+			$('#produk_nama').val('');
+			$('#produk_jenis').val('');
+			$('#produk_premi').val('');
+			console.log($('#picagen').value);
+
+			$.ajax({
+				type : 'GET',
+				contentType : 'application/json',
+				url : '/api/product/get-all',
+				success : function(response) {
+					console.log(response);		
+					html = "";
+					option = "";
+					if(response.data.length>0){
+						for(let i=0; i < response.data.length; i++){
+							option += '<option value="'+response.data[i].namaProduk+'" data-produkid="'+response.data[i].id+'" data-premi="'+response.data[i].premi+'" data-jenis="'+response.data[i].jenisProduk+'">'+
+								response.data[i].namaProduk+'</option>';
+						}
+					}		
+					html='<div class="form-group"> '+
+							'<label for="brand">Produk:</label> <select class="form-control" id="produk_nama" onchange="getProduct(this)">'+
+								'<option></option>'+
+							option+
+							'</select></div>';
+					$('#dynamic-content').html(html);
+						
+				},
+				error : function(error) {
+					console.error(error);
+					alert('An error occurred');
+				}
+			});
+		});
+
+		function getProduct(param){
+			var opt = param.options[param.selectedIndex];
+			var jenisProduk = opt.dataset.jenis;
+			var premi = opt.dataset.premi;
+			var idProduk = opt.dataset.produkid;
+
+
+			$('#produk_id').val(idProduk);
+			$('#produk_jenis').val(jenisProduk);
+			$('#produk_premi').val(premi);
+
+		}
+
 		function getDataDetail() {
-			var brand = document.getElementById("brand").value;
-			var weight = document.getElementById("weight").value;
-			var qty = document.getElementById("qty").value;
-			var price = document.getElementById("price").value;
-			console.log("test " + brand + " " + weight + " " + qty + " "
-					+ price);
+			var produkId = document.getElementById("produk_id").value;
+			var produkNama = document.getElementById("produk_nama").value;
+			var produkJenis = document.getElementById("produk_jenis").value;
+			var prdukPremi = document.getElementById("produk_premi").value;
 
 			const dataTable = document.getElementById('detailTable');
 			detail.push({
-				brand : brand,
-				weight : weight,
-				qty : qty,
-				price : price
+				id_produk : produkId,
+				nama_produk : produkNama,
+				jenis_produk : produkJenis,
+				premi_produk : prdukPremi
 			});
 
 			const row = dataTable.insertRow();
-			const cellBrand = row.insertCell(0);
-			const cellWeight = row.insertCell(1);
-			const cellQty = row.insertCell(2);
-			const cellPrice = row.insertCell(3);
+			const cellId = row.insertCell(0);
+			const cellNama = row.insertCell(1);
+			const cellJenis = row.insertCell(2);
+			const cellPremi = row.insertCell(3);
 			const cellAction = row.insertCell(4);
 
-			cellBrand.textContent = brand;
-			cellWeight.textContent = weight;
-			cellQty.textContent = qty;
-			cellPrice.textContent = price;
+			cellId.textContent = produkId;
+			cellNama.textContent = produkNama;
+			cellJenis.textContent = produkJenis;
+			cellPremi.textContent = prdukPremi;
 			cellAction.innerHTML = '<button class="btn btn-danger deleteButton" ><i class="fa fa-trash"></i></button>';
 
 			$('#nestedModal').modal('hide');
 
 			let total = 0;
 			for (let i = 0; i < detail.length; i++) {
-				prc = parseInt(detail[i].price);
+				prc = parseInt(detail[i].premi_produk);
 				total += prc;
 			}
 			console.log(total);
