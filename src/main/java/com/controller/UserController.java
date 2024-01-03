@@ -3,6 +3,8 @@ package com.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +24,14 @@ public class UserController {
 	UserService msUserSvc;
 	
 	@GetMapping({ "/user"})
-   public String getData(Model model){
+   public String getData(Model model, HttpSession session){
 		try {
 			
 			List<User> data = msUserSvc.findAll();
 	        model.addAttribute("data", data);
-			
+			model.addAttribute("emailUser", session.getAttribute("email"));
+			model.addAttribute("roleUser", session.getAttribute("role"));
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

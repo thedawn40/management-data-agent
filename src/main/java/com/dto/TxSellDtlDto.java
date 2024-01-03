@@ -7,13 +7,23 @@ public class TxSellDtlDto extends BaseEntity{
 	private String sellNo;
 
 	private String sellNoDtl;
-	private String brand;
-	private String qty;
-	private String price;
-	private String weight;
-	
+	private String productId;
+	private String premi;
+
 	public String getSellNo() {
 		return sellNo;
+	}
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+	public String getPremi() {
+		return premi;
+	}
+	public void setPremi(String premi) {
+		this.premi = premi;
 	}
 	public void setSellNo(String sellNo) {
 		this.sellNo = sellNo;
@@ -23,29 +33,5 @@ public class TxSellDtlDto extends BaseEntity{
 	}
 	public void setSellNoDtl(String sellNoDtl) {
 		this.sellNoDtl = sellNoDtl;
-	}
-	public String getBrand() {
-		return brand;
-	}
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-	public String getQty() {
-		return qty;
-	}
-	public void setQty(String qty) {
-		this.qty = qty;
-	}
-	public String getPrice() {
-		return price;
-	}
-	public void setPrice(String price) {
-		this.price = price;
-	}
-	public String getWeight() {
-		return weight;
-	}
-	public void setWeight(String weight) {
-		this.weight = weight;
 	}
 }

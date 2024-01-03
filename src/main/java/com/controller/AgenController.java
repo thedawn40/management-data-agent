@@ -2,6 +2,8 @@ package com.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +23,13 @@ public class AgenController {
     AgenService agenService;
 
     @GetMapping({ "/agen"})
-    public String getData(Model model){
+    public String getData(Model model, HttpSession session){
             try {
                 
                 List<Agen> data = agenService.findAll();
                 model.addAttribute("data", data);
+				model.addAttribute("emailUser", session.getAttribute("email"));
+                model.addAttribute("roleUser", session.getAttribute("role"));
                 
             }catch(Exception e) {
                 e.printStackTrace();

@@ -6,3 +6,7 @@ application-2023-12-30.0.log
 application-2023-12-29.0.log
 .factorypath
 .gitignore
+src/main/resources/application.properties
+pom.xml
+.classpath
+.factorypath

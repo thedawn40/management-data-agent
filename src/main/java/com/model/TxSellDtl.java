@@ -1,5 +1,6 @@
 package com.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,15 +11,30 @@ import javax.persistence.Table;
 @Table(name = "tx_sell_dtl")
 public class TxSellDtl extends BaseEntity{
 	
+	@Column(name = "sell_no")
 	private String sellNo;
 
 	@Id
+	@Column(name = "sell_no_dtl")
 	private String sellNoDtl;
-	private String brand;
-	private String qty;
-	private String price;
-	private String weight;
+
+	@Column(name = "product_id")
+	private String productId;
+
+	private String premi;
 	
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+	public String getPremi() {
+		return premi;
+	}
+	public void setPremi(String premi) {
+		this.premi = premi;
+	}
 	public String getSellNo() {
 		return sellNo;
 	}
@@ -30,29 +46,5 @@ public class TxSellDtl extends BaseEntity{
 	}
 	public void setSellNoDtl(String sellNoDtl) {
 		this.sellNoDtl = sellNoDtl;
-	}
-	public String getBrand() {
-		return brand;
-	}
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-	public String getQty() {
-		return qty;
-	}
-	public void setQty(String qty) {
-		this.qty = qty;
-	}
-	public String getPrice() {
-		return price;
-	}
-	public void setPrice(String price) {
-		this.price = price;
-	}
-	public String getWeight() {
-		return weight;
-	}
-	public void setWeight(String weight) {
-		this.weight = weight;
 	}
 }

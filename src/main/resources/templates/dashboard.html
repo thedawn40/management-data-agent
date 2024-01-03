@@ -48,30 +48,31 @@
 			<hr class="sidebar-divider my-0">
 
 			<!-- Nav Item - Dashboard -->
-			<li class="nav-item active"><a class="nav-link"
+			<li class="nav-item active" th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" ><a class="nav-link"
 				th:href="@{/dashboard}"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a>
 			</li>
 
 			<!-- Divider -->
-			<hr class="sidebar-divider">
+			<hr class="sidebar-divider"  th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" >
 
 			<!-- Heading -->
-			<div class="sidebar-heading">Master</div>
-			<li class="nav-item"><a class="nav-link" th:href="@{/user}">
-					<i class="fas fa-fw fa-table"></i> <span>User</span>
+			<div class="sidebar-heading" th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" >Master</div>
+			
+			<li class="nav-item"><a class="nav-link" th:href="@{/user}" th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" >
+					<i class="fas fa-fw fa-table"></i> <span style="">User</span>
 			</a></li>
-			<li class="nav-item"><a class="nav-link" th:href="@{/agen}">
+			<li class="nav-item"><a class="nav-link" th:href="@{/agen}" th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}">
 				<i class="fas fa-fw fa-table"></i> <span>Agen</span>
 			</a></li>
 
 			<!-- Divider -->
-			<hr class="sidebar-divider">
+			<hr class="sidebar-divider"  th:style="${roleUser == 'AGEN' ? 'display:block' : 'display:none'}" >
 
 			<!-- Heading -->
-			<div class="sidebar-heading">Transaksi</div>
+			<div class="sidebar-heading"  th:style="${roleUser == 'AGEN' ? 'display:block' : 'display:none'}" >Transaksi</div>
 
 			<!-- Nav Item - Tables -->
-			<li class="nav-item"><a class="nav-link" th:href="@{/penjualan}">
+			<li class="nav-item"><a class="nav-link" th:href="@{/penjualan}"  th:style="${roleUser == 'AGEN' ? 'display:block' : 'display:none'}" >
 					<i class="fas fa-fw fa-table"></i> <span>Penjualan</span>
 			</a></li>
 
@@ -145,12 +146,14 @@
 							</div></li>
 
 						<!-- Nav Item - Alerts -->
-						<li class="nav-item dropdown no-arrow mx-1"><a
+						<!-- <li class="nav-item dropdown no-arrow mx-1"><a
 							class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> <i class="fas fa-bell fa-fw"></i> <!-- Counter - Alerts -->
-								<span class="badge badge-danger badge-counter">3+</span>
-						</a> <!-- Dropdown - Alerts -->
+							aria-expanded="false"> <i class="fas fa-bell fa-fw"></i>  -->
+							<!-- Counter - Alerts -->
+								<!-- <span class="badge badge-danger badge-counter">3+</span>
+						</a>  -->
+						<!-- Dropdown - Alerts -->
 							<div
 								class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
 								aria-labelledby="alertsDropdown">
@@ -192,13 +195,15 @@
 							</div></li>
 
 						<!-- Nav Item - Messages -->
-						<li class="nav-item dropdown no-arrow mx-1"><a
+						<!-- <li class="nav-item dropdown no-arrow mx-1"><a
 							class="nav-link dropdown-toggle" href="#" id="messagesDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> <i class="fas fa-envelope fa-fw"></i>
-								<!-- Counter - Messages --> <span
+							aria-expanded="false"> <i class="fas fa-envelope fa-fw"></i> -->
+								<!-- Counter - Messages --> 
+								<!-- <span
 								class="badge badge-danger badge-counter">7</span>
-						</a> <!-- Dropdown - Messages -->
+						</a>  -->
+						<!-- Dropdown - Messages -->
 							<div
 								class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
 								aria-labelledby="messagesDropdown">
@@ -260,8 +265,7 @@
 							class="nav-link dropdown-toggle" href="#" id="userDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false"> <span
-								class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas
-									McGee</span> <img class="img-profile rounded-circle"
+								class="mr-2 d-none d-lg-inline text-gray-600 small"><h6 th:text="${emailUser}"></h6></span> <img class="img-profile rounded-circle"
 								src="img/undraw_profile.svg">
 						</a> <!-- Dropdown - User Information -->
 							<div
@@ -293,13 +297,13 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<div
+					<!-- <div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 						<a id="generateReport" th:href="@{/generate-pdf}"
 							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 							class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-					</div>
+					</div> -->
 
 					<!-- Content Row -->
 					<div class="row">
@@ -331,8 +335,8 @@
 										<div class="col mr-2">
 											<div
 												class="text-xs font-weight-bold text-success text-uppercase mb-1">
-												Earnings (Annual)</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+												Total Premi</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${totalPendapatan}"></div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -349,19 +353,19 @@
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div
-												class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+												class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Produk
 											</div>
 											<div class="row no-gutters align-items-center">
 												<div class="col-auto">
-													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalProduk}"></div>
 												</div>
-												<div class="col">
+												<!-- <div class="col">
 													<div class="progress progress-sm mr-2">
 														<div class="progress-bar bg-info" role="progressbar"
 															style="width: 50%" aria-valuenow="50" aria-valuemin="0"
 															aria-valuemax="100"></div>
 													</div>
-												</div>
+												</div> -->
 											</div>
 										</div>
 										<div class="col-auto">
@@ -380,8 +384,8 @@
 										<div class="col mr-2">
 											<div
 												class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-												Pending Requests</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+												Total Transaksi</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${totalTransaksi}"></div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -402,8 +406,7 @@
 								<!-- Card Header - Dropdown -->
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Earnings
-										Overview</h6>
+									<h6 class="m-0 font-weight-bold text-primary">Premi Overview</h6>
 									<div class="dropdown no-arrow">
 										<a class="dropdown-toggle" href="#" role="button"
 											id="dropdownMenuLink" data-toggle="dropdown"
@@ -424,16 +427,16 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="myAreaChart"></canvas>
+										<!-- <canvas id="myAreaChart"></canvas> -->
+										<canvas id="myBarChart" style="max-height: 314px;"></canvas>
 									</div>
 								</div>
 							</div>
 						</div>
 
 						<!-- Pie Chart -->
-						<div class="col-xl-4 col-lg-5">
+						<!-- <div class="col-xl-4 col-lg-5">
 							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">Revenue
@@ -455,7 +458,6 @@
 										</div>
 									</div>
 								</div>
-								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-pie pt-4 pb-2">
 										<canvas id="myPieChart"></canvas>
@@ -471,7 +473,8 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
+
 					</div>
 
 				</div>
@@ -518,7 +521,7 @@
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
 						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+					<a class="btn btn-primary" th:href="@{/login}">Logout</a>
 				</div>
 			</div>
 		</div>
@@ -540,6 +543,49 @@
 	<!-- Page level custom scripts -->
 	<script src="js/demo/chart-area-demo.js"></script>
 	<script src="js/demo/chart-pie-demo.js"></script>
+
+	<script th:inline="javascript">
+
+/*<![CDATA[*/
+
+    var dataTotalPendapatan = /*[[${listPendapatan}]]*/ 'default';
+    console.log(">>> " +dataTotalPendapatan);
+
+/*]]>*/
+
+// Sample data for the bar chart
+	// let intTotalPendapatan = dataTotalPendapatan.split(",").map(Number);
+	const data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: 'Values',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            data: dataTotalPendapatan,
+        }],
+    };
+
+    // Chart configuration
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true,
+                },
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    };
+
+    // Create the bar chart
+    const ctxds = document.getElementById('myBarChart').getContext('2d');
+    new Chart(ctxds, config);
+	</script>
 
 </body>
 

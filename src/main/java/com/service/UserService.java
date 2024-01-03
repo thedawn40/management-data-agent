@@ -11,5 +11,7 @@ public interface UserService {
 
     User save(UserDto dto);
 
+    User findOne(String email, String password);
+
     
 }

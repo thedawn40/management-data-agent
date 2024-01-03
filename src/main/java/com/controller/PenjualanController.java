@@ -25,10 +25,11 @@ public class PenjualanController {
 	@GetMapping({ "/penjualan"})
    public String getData(Model model, HttpSession session){
 		try {
-            System.out.println(">>>>>>>>>> "+session.getAttribute("username"));
 			List<TxSellHdr> data = txSellHdrSvc.findAll();
 	        model.addAttribute("dataSell", data);
-	        model.addAttribute("username", session.getAttribute("username"));
+	        model.addAttribute("emailUser", session.getAttribute("email"));
+			model.addAttribute("roleUser", session.getAttribute("role"));
+		System.out.println(">>>>>>>>>>> "+session.getAttribute("email"));
 			
 		}catch(Exception e) {
 			e.printStackTrace();

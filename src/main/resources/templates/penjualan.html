@@ -34,6 +34,7 @@
 	<div id="wrapper">
 
 		<!-- Sidebar -->
+		<!-- Sidebar -->
 		<ul
 			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
 			id="accordionSidebar">
@@ -45,35 +46,38 @@
 				<div class="sidebar-brand-icon rotate-n-15">
 					<i class="fas fa-laugh-wink"></i>
 				</div>
-				<div class="sidebar-brand-text mx-3">Toko Emas</div>
+				<div class="sidebar-brand-text mx-3">Management Agent</div>
 			</a>
 
 			<!-- Divider -->
 			<hr class="sidebar-divider my-0">
 
 			<!-- Nav Item - Dashboard -->
-			<li class="nav-item"><a class="nav-link"
+			<li class="nav-item " th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" ><a class="nav-link"
 				th:href="@{/dashboard}"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a>
 			</li>
 
 			<!-- Divider -->
-			<hr class="sidebar-divider">
+			<hr class="sidebar-divider"  th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" >
 
 			<!-- Heading -->
-			<div class="sidebar-heading">Master</div>
-			<li class="nav-item"><a class="nav-link" th:href="@{/user}">
-					<i class="fas fa-fw fa-table"></i> <span>User</span>
+			<div class="sidebar-heading" th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" >Master</div>
+			
+			<li class="nav-item"><a class="nav-link" th:href="@{/user}" th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}" >
+					<i class="fas fa-fw fa-table"></i> <span style="">User</span>
+			</a></li>
+			<li class="nav-item"><a class="nav-link" th:href="@{/agen}" th:style="${roleUser == 'ADMIN' ? 'display:block' : 'display:none'}">
+				<i class="fas fa-fw fa-table"></i> <span>Agen</span>
 			</a></li>
 
-
 			<!-- Divider -->
-			<hr class="sidebar-divider">
+			<hr class="sidebar-divider"  th:style="${roleUser == 'AGEN' ? 'display:block' : 'display:none'}" >
 
 			<!-- Heading -->
-			<div class="sidebar-heading">Transaksi</div>
+			<div class="sidebar-heading"  th:style="${roleUser == 'AGEN' ? 'display:block' : 'display:none'}" >Transaksi</div>
 
 			<!-- Nav Item - Tables -->
-			<li class="nav-item active"><a class="nav-link" th:href="@{/penjualan}">
+			<li class="nav-item active"><a class="nav-link" th:href="@{/penjualan}"  th:style="${roleUser == 'AGEN' ? 'display:block' : 'display:none'}" >
 					<i class="fas fa-fw fa-table"></i> <span>Penjualan</span>
 			</a></li>
 
@@ -149,12 +153,14 @@
 							</div></li>
 
 						<!-- Nav Item - Alerts -->
-						<li class="nav-item dropdown no-arrow mx-1"><a
+						<!-- <li class="nav-item dropdown no-arrow mx-1"><a
 							class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> <i class="fas fa-bell fa-fw"></i> <!-- Counter - Alerts -->
-								<span class="badge badge-danger badge-counter">3+</span>
-						</a> <!-- Dropdown - Alerts -->
+							aria-expanded="false"> <i class="fas fa-bell fa-fw"></i>  -->
+							<!-- Counter - Alerts -->
+								<!-- <span class="badge badge-danger badge-counter">3+</span>
+						</a>  -->
+						<!-- Dropdown - Alerts -->
 							<div
 								class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
 								aria-labelledby="alertsDropdown">
@@ -196,14 +202,15 @@
 							</div></li>
 
 						<!-- Nav Item - Messages -->
-						<li class="nav-item dropdown no-arrow mx-1"><a
+						<!-- <li class="nav-item dropdown no-arrow mx-1"><a
 							class="nav-link dropdown-toggle" href="#" id="messagesDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> <i class="fas fa-envelope fa-fw"></i>
-								<!-- Counter - Messages --> <span
+							aria-expanded="false"> <i class="fas fa-envelope fa-fw"></i> -->
+								<!-- Counter - Messages --> 
+								<!-- <span
 								class="badge badge-danger badge-counter">7</span>
-						</a> <!-- Dropdown - Messages -->
-							<div
+						</a>  -->
+						<!-- Dropdown - Messages -->							<div
 								class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
 								aria-labelledby="messagesDropdown">
 								<h6 class="dropdown-header">Message Center</h6>
@@ -264,8 +271,7 @@
 							class="nav-link dropdown-toggle" href="#" id="userDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false"> <span
-								class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas
-									McGee</span> <img class="img-profile rounded-circle"
+								class="mr-2 d-none d-lg-inline text-gray-600 small"><h6 th:text="${emailUser}"></h6></span> <img class="img-profile rounded-circle"
 								src="img/undraw_profile.svg">
 						</a> <!-- Dropdown - User Information -->
 							<div
@@ -389,7 +395,7 @@
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
 						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+					<a class="btn btn-primary" th:href="@{/login}">Logout</a>
 				</div>
 			</div>
 		</div>
@@ -501,8 +507,8 @@
 							placeholder="Customer Name">
 					</div>
 					<div class="form-group">
-						<label for="pic">PIC:</label> <input type="text"
-							class="form-control" id="pic" placeholder="PIC">
+						<label for="pic">PIC:</label> <input type="text" disabled
+							class="form-control" id="pic" placeholder="PIC" th:value="${emailUser}">
 					</div>
 					<div class="form-group">
 						<label for="total">Total:</label> <input type="text"
@@ -652,17 +658,17 @@
 		}
 
 		function getDataDetail() {
-			var produkId = document.getElementById("produk_id").value;
-			var produkNama = document.getElementById("produk_nama").value;
-			var produkJenis = document.getElementById("produk_jenis").value;
-			var prdukPremi = document.getElementById("produk_premi").value;
+			var varprodukId = document.getElementById("produk_id").value;
+			var varprodukNama = document.getElementById("produk_nama").value;
+			var varprodukJenis = document.getElementById("produk_jenis").value;
+			var varprdukPremi = document.getElementById("produk_premi").value;
 
 			const dataTable = document.getElementById('detailTable');
 			detail.push({
-				id_produk : produkId,
-				nama_produk : produkNama,
-				jenis_produk : produkJenis,
-				premi_produk : prdukPremi
+				productId : varprodukId,
+				nama_produk : varprodukNama,
+				jenis_produk : varprodukJenis,
+				premi : varprdukPremi
 			});
 
 			const row = dataTable.insertRow();
@@ -672,17 +678,17 @@
 			const cellPremi = row.insertCell(3);
 			const cellAction = row.insertCell(4);
 
-			cellId.textContent = produkId;
-			cellNama.textContent = produkNama;
-			cellJenis.textContent = produkJenis;
-			cellPremi.textContent = prdukPremi;
+			cellId.textContent = varprodukId;
+			cellNama.textContent = varprodukNama;
+			cellJenis.textContent = varprodukJenis;
+			cellPremi.textContent = varprdukPremi;
 			cellAction.innerHTML = '<button class="btn btn-danger deleteButton" ><i class="fa fa-trash"></i></button>';
 
 			$('#nestedModal').modal('hide');
 
 			let total = 0;
 			for (let i = 0; i < detail.length; i++) {
-				prc = parseInt(detail[i].premi_produk);
+				prc = parseInt(detail[i].premi);
 				total += prc;
 			}
 			console.log(total);
